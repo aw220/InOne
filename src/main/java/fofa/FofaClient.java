@@ -12,7 +12,7 @@ import com.r4v3zn.fofa.core.DO.FofaData;
 import com.r4v3zn.fofa.core.DO.User;
 import com.r4v3zn.fofa.core.DO.UserLogin;
 import fofa.FofaClientConsts;
-import com.r4v3zn.fofa.core.constants.FofaFieldsConsts;
+import fofa.FofaFieldsConsts;
 import com.r4v3zn.fofa.core.enmus.UserVipLevelEnum;
 import com.r4v3zn.fofa.core.exception.FofaException;
 import com.r4v3zn.fofa.core.util.HttpUtils;
@@ -21,6 +21,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static burp.Utils.*;
 
 public class FofaClient {
     private String email;

@@ -18,25 +18,16 @@ import static burp.Utils.*;
 public class BurpExtender implements IBurpExtender {
     private MainUI main;
 
-    public BurpExtender() {
-
-    }
-
-
     @Override
     public void registerExtenderCallbacks(IBurpExtenderCallbacks callbacks) {
+//        new Utils();
         cbs = callbacks;
-        main = new MainUI();
-        callbacks.setExtensionName(Utils.EXTENSION_NAME);
-        SwingUtilities.invokeLater(this::initialize);
-    }
-
-
-    private void initialize() {
-        cbs.customizeUiComponent(main);
-        cbs.addSuiteTab(main);
         stdout = new PrintWriter(cbs.getStdout(), true);
         stderr = new PrintWriter(cbs.getStderr(), true);
+        main = new MainUI();
+        cbs.customizeUiComponent(main);
+        cbs.addSuiteTab(main);
+        callbacks.setExtensionName(Utils.EXTENSION_NAME);
     }
 
 }
