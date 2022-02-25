@@ -14,11 +14,18 @@
 
 
 ## FOFA
-
-1. Config页面配置邮箱和Key，点击Save保存。
-2. 输入搜索语法，点击Search搜索，可以进行翻页查看，PreSearch是预搜索，由于fofa比较慢，会在已获取数据不多时在后台获取数据。
-3. 除Cert、Header外的列，双击某一条可以加入语法到搜索框。
-4. 在表格host列右键有浏览器打开选项，可以在Config配置常用浏览器的绝对路径。
-5. Table Size是表格大小。
-6. 可选则是否查询Cert、Header。
-7. 待开发。。。
+### 配置
+1. Config页面配置邮箱、Key、常用浏览器的绝对路径
+### 左键
+1. 除Cert、Header外的列，双击某一条可以加入语法到搜索框。
+2. Cert、Header列可以双击进行复制想要的部分，由于技术原因，里面会有html标签，无视它即可😂。
+### 右键
+1. Copy:复制的部分是鼠标右键所在的列，可多选复制，Cert、Header列用右键整体复制不会出现html标签，可放心复制。
+2. Send to Fiora:可以将选中的行右键发送到Fiora的target部分，进行PoC测试。
+3. Open in Browser:在host列右键会有此功能，将会用Config配置路径的浏览器打开。
+### 搜索
+1. Table Size:展示表格的大小。
+2. PreSearch:预搜索，会在已加载数据快展示完时进行后台获取数据。
+3. 可选则是否查询Cert、Header。
+4. Total Size:仅供参考，目前fofa很多东西搜不到了。
+10. export待开发。。。
