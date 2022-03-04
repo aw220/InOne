@@ -18,8 +18,15 @@
 2. Send to Fiora:可以将选中的行右键发送到Fiora的target部分，进行PoC测试。
 3. Open in Browser:在host列右键会有此功能，将会用Config配置路径的浏览器打开。
 ### 搜索
-1. Table Size:展示表格的大小。
-2. PreSearch:预搜索，会在已加载数据快展示完时进行后台获取数据。
-3. 可选则是否查询Cert、Header。
-4. Total Size:仅供参考，目前fofa很多东西搜不到了。
+1. ☑️Table Size:展示表格的大小。
+2. ☑️PreSearch:预搜索，会在已加载数据快展示完时进行后台获取数据。
+3. ☑️Seo:可以查询host为URL的爱站权重。
+4. 可选则是否查询各个信息，信息种类选的多了会返回空数据。
+5. Total Size:仅供参考，目前fofa很多东西搜不到了。
 10. export待开发。。。
+
+## 界面
+![image](https://user-images.githubusercontent.com/47287118/156734253-474dcaf5-2bf6-420f-bda4-d18d8a64aba8.png)
+![image](https://user-images.githubusercontent.com/47287118/156734327-a63e623f-2bbe-4b3b-9556-a1104cf9f61f.png)
+![image](https://user-images.githubusercontent.com/47287118/156734399-ddb1bdc9-cb9c-4089-88ea-c907eab5f4cb.png)
+![image](https://user-images.githubusercontent.com/47287118/156734475-59112a40-a248-42ae-bce7-e7cfbf217d14.png)
