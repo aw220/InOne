@@ -7,7 +7,7 @@
 <br>
 <br>
 # 用法
-## FOFA
+## 🔍🔍🔍FOFA
 ### 配置
 1. Config页面配置邮箱、Key、常用浏览器的绝对路径
 ### 左键
@@ -30,7 +30,7 @@
 ![image](https://user-images.githubusercontent.com/47287118/156734399-ddb1bdc9-cb9c-4089-88ea-c907eab5f4cb.png)
 ![image](https://user-images.githubusercontent.com/47287118/156734475-59112a40-a248-42ae-bce7-e7cfbf217d14.png)
 
-## 不同tool tab右键扩展
+## 🚗🚗🚗不同tool tab右键扩展
 ### 介绍：在如Repeater、Proxy界面，对选中的内容可以发送到命令行进行工具调用。
 ### 用法：
 1. 规则需要在Config界面的`自定义send to`配置自己的命令，save保存即可
@@ -41,9 +41,6 @@
 <img width="1391" alt="image" src="https://user-images.githubusercontent.com/47287118/156929351-af917b66-8653-453c-b167-6fd722a3686c.png">
 <img width="881" alt="image" src="https://user-images.githubusercontent.com/47287118/156929760-949a395b-978e-4702-b992-8e6b65a233c8.png">
 <img width="589" alt="image" src="https://user-images.githubusercontent.com/47287118/156929662-dd7f3df7-e429-4b11-aed2-e6a4cdc4e00a.png">
-
-
-
 
 ## Fiora
 https://github.com/bit4woo/Fiora
