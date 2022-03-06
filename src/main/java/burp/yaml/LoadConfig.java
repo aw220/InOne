@@ -1,82 +1,70 @@
 package burp.yaml;
 
+import burp.ui.entry.CustomLineEntry;
 import fofa.FofaClient;
+import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static burp.Utils.*;
 
 public class LoadConfig {
-    private static final Yaml yaml = new Yaml();
-    private String browser = "";
-    private String fofaId = "";
-    private String fofaKey = "";
-    private static Map<String,String> cache = new HashMap<>();
+    private static Yaml yaml;
+    DumperOptions options = new DumperOptions();
+
+    private static Map<String, Object> cache = new HashMap<>();
 
     public LoadConfig() {
+        options.setIndent(2);
+        options.setPrettyFlow(true);
+        options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+        yaml = new Yaml(options);
+
         File yamlSetting = new File(SETTING_PATH);
         if (!(yamlSetting.exists() && yamlSetting.isFile())) {
             // 初次使用创建配置文件
             initSetting();
-        }else {
-            loadBrowser();
-            loadFofaAccount();
+        } else {
+            readFromDisk();
         }
     }
 
     public String getBrowser() {
-        return browser;
-    }
-
-
-    private void loadBrowser() {
-        try {
-            InputStream inorder = new FileInputStream(SETTING_PATH);
-            Map<String, String> result = yaml.load(inorder);
-            this.browser = result.get("BrowserPath");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace(stderr);
-        }
+        return (String) cache.get("BrowserPath");
     }
 
     public void setBrowser(String path) {
-        this.browser = path;
         cache.put("BrowserPath", path);
     }
 
+    public void setCustom(List<CustomLineEntry> customLineEntries) {
+        cache.put("Custom", customLineEntries);
+    }
+
     public String getFofaId() {
-        return fofaId;
+        return (String) ((Map) cache.get("FofaAccount")).get("id");
     }
 
     public String getFofaKey() {
-        return fofaKey;
+        return (String) ((Map) cache.get("FofaAccount")).get("key");
+    }
+
+    public List<CustomLineEntry> getCustom() {
+        return (List<CustomLineEntry>) cache.get("Custom");
     }
 
     // 设置fofa账户
     public void setFofaAccount(String id, String key) {
-        this.fofaId = id;
-        this.fofaKey = key;
-        cache.put("FofaId", id);
-        cache.put("FofaKey", key);
+        cache.put("FofaAccount", new HashMap() {{
+            put("id", id);
+            put("key", key);
+        }});
     }
 
-    private void loadFofaAccount() {
-        try {
-            InputStream inorder = new FileInputStream(SETTING_PATH);
-            Map<String, String> result = yaml.load(inorder);
-            this.fofaId = result.get("FofaId");
-            this.fofaKey = result.get("FofaKey");
-            this.browser = result.get("BrowserPath");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace(stderr);
-        }
-    }
-
-    public void saveToDisk(){
+    public void saveToDisk() {
         try {
             Writer ws = new OutputStreamWriter(new FileOutputStream(SETTING_PATH), StandardCharsets.UTF_8);
             addListener();
@@ -84,20 +72,38 @@ public class LoadConfig {
         } catch (FileNotFoundException e) {
             e.printStackTrace(stderr);
         }
+        stdout.println("save success!!!");
     }
-    // 初始化设置信息
-    public void initSetting() {
-        Map<String, Object> r = new HashMap<>();
+
+    private void readFromDisk() {
         try {
-            Writer ws = new OutputStreamWriter(new FileOutputStream(SETTING_PATH), StandardCharsets.UTF_8);
-            yaml.dump(r, ws);
-        } catch (Exception ex) {
-            ex.printStackTrace();
+            cache = yaml.load(new InputStreamReader(new FileInputStream(SETTING_PATH)));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace(stderr);
         }
     }
 
+    // 初始化设置信息
+    public void initSetting() {
+        cache.put("FofaAccount", new HashMap() {{
+            put("id", "");
+            put("key", "");
+        }});
+        cache.put("BrowserPath", "");
+        cache.put("Custom", new ArrayList<CustomLineEntry>(Collections.singletonList(new CustomLineEntry("", ""))));
+        saveToDisk();
+    }
+
     // 用于某些需要及时更新配置的功能
-    private void addListener(){
-        client = new FofaClient(loadConn.getFofaId(), loadConn.getFofaKey());
+    private void addListener() {
+        client = new FofaClient(getFofaId(), getFofaKey());
+    }
+
+    public static void main(String[] args) {
+        LoadConfig loadConfig = new LoadConfig();
+
+
+        System.out.println(cache);
+        System.out.println(loadConfig.getCustom().get(0).getName());
     }
 }

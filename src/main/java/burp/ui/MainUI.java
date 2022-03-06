@@ -9,24 +9,28 @@
 package burp.ui;
 
 import burp.ITab;
+import burp.ui.panel.ConfigPanel;
 import burp.ui.panel.FioraPanel;
 import burp.ui.panel.FofaPanel;
 
 import javax.swing.*;
 import java.awt.*;
 
-import static burp.Utils.EXTENSION_NAME;
-import static burp.Utils.globalConfig;
+import static burp.Utils.*;
 
 public class MainUI extends JPanel implements ITab {
     private JTabbedPane tabbedPaneRoot;
     private FofaPanel fofa;
-    private ConfigPanel config;
+    private FofaPanel seo;
     private FioraPanel fiora;
     private JPanel draw;
+    private ConfigPanel config;
 
 
     public MainUI() {
+        stdout.println("-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+");
+        stdout.println("InOne load success!\nAuthor: aw220");
+        stdout.println("-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+");
         initComponents();
 
     }
@@ -39,10 +43,6 @@ public class MainUI extends JPanel implements ITab {
         draw = new JPanel();
         //================ this ================
         setLayout(new BorderLayout());
-//        ((GridBagLayout) getLayout()).columnWidths = new int[]{0, 0};
-//        ((GridBagLayout) getLayout()).rowHeights = new int[]{0, 0};
-//        ((GridBagLayout) getLayout()).columnWeights = new double[]{1.0, 1.0E-4};
-//        ((GridBagLayout) getLayout()).rowWeights = new double[]{1.0, 1.0E-4};
 
         //================ tabbedPaneRoot ================
         {

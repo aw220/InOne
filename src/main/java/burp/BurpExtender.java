@@ -9,6 +9,7 @@
 package burp;
 
 import burp.ui.MainUI;
+import burp.ui.menu.ToShellMenu;
 
 import javax.swing.*;
 import java.io.PrintWriter;
@@ -27,6 +28,7 @@ public class BurpExtender implements IBurpExtender {
         cbs.customizeUiComponent(main);
         cbs.addSuiteTab(main);
         callbacks.setExtensionName(Utils.EXTENSION_NAME);
+        callbacks.registerContextMenuFactory(new ToShellMenu());
     }
 
 }

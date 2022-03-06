@@ -5,13 +5,16 @@
 
 package fofa;
 
+import burp.Utils;
 import burp.ui.model.FofaLineTableModel;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import me.gv7.woodpecker.requests.RawResponse;
 import me.gv7.woodpecker.requests.Requests;
 
+import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.HashMap;
 
@@ -39,7 +42,6 @@ public class FofaClient {
     public HashMap<String, String> getData(String query, int page, int connectTimeout, int socksTimeout) {
         RawResponse response;
         HashMap<String, String> result = new HashMap<>();
-        stdout.println(getFofaSearchApi(query, page));
         try {
             response = Requests.get(getFofaSearchApi(query, page))
                     .headers(new HashMap<String, String>() {{
@@ -88,13 +90,24 @@ public class FofaClient {
 
     public String getFields() {
         StringBuilder builder = new StringBuilder();
-        for (String i : FofaLineTableModel.getTitletList().subList(1, FofaLineTableModel.getTitletList().size() - 2)) {
+        for (String i : FofaLineTableModel.getTitletList().subList(1, 4)) {
             builder.append(i).append(",");
         }
+        if (SERVER)
+            builder.append("server").append(",");
+        if (TYPE)
+            builder.append("type").append(",");
+        if (COUNTRY)
+            builder.append("country").append(",");
+        if (PROTOCOL)
+            builder.append("protocol").append(",");
+        if (TITLE)
+            builder.append("title").append(",");
         if (CERT)
             builder.append("cert").append(",");
         if (HEADER)
             builder.append("header").append(",");
+        FIELDS = Arrays.asList(builder.toString().split(","));
         String a = builder.toString();
         return a.substring(0, a.length() - 1);
     }

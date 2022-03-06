@@ -52,7 +52,6 @@ public class GlobalConfig {
 		try {
 			searchHistory = History.getInstance();
 			FileUtils.write(localFile, this.ToJson());
-			stdout.println("Saving Config To Disk");
 			return localFile.toString();
 		} catch (IOException e) {
 			e.printStackTrace();

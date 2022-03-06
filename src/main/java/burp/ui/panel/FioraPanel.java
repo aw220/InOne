@@ -136,16 +136,13 @@ public class FioraPanel extends JPanel {
 		try {//这其中的异常会导致burp退出
 			System.out.println("=================================");
 			System.out.println("==Start Loading Data From: " + dir+"==");
-			stdout.println("==Start Loading Data From: " + dir+"==");
 
 			//showToPoCPanel(scanPoCFiles(dir));
 			showToPoCPanel(scanUncleiPoCs(dir));
 
 			System.out.println("==End Loading Data From: "+ dir +"==");//输出到debug console
-			stdout.println("==End Loading Data From: "+ dir +"==");
 			return true;
 		} catch (Exception e) {
-			stdout.println("Loading Failed!");
 			e.printStackTrace();//输出到debug console
 			e.printStackTrace(stderr);
 			return false;
@@ -314,7 +311,6 @@ public class FioraPanel extends JPanel {
 		}
 		titleTableModel.setListenerIsOn(true);
 		System.out.println(row+" title entries loaded from database file");
-		stdout.println(row+" title entries loaded from database file");
 		FioraPanel.getTitleTable().search("");// hide checked items
 		lblStatus.setText(titleTableModel.getStatusSummary());
 	}

@@ -31,6 +31,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static burp.Utils.*;
 
@@ -39,7 +40,7 @@ public class FofaPanel extends JPanel {
     private JPanel tablePanel;
     private JPanel btnFirstLinePanel;
     private JPanel btnSecondLinePanel;
-    private JPanel pagePanel;
+    private JPanel blankPanel;
     private FofaLineTable resultTable;
     private FofaLineTableModel fofaLineTableModel = new FofaLineTableModel();
     private JLabel searchLabel;
@@ -54,7 +55,13 @@ public class FofaPanel extends JPanel {
     private JTextField tablePageSizeField;
     private JCheckBox autoSearchBox;
     private JCheckBox tableHeadCert;
+    private JCheckBox tableHeadServer;
+    private JCheckBox tableHeadType;
+    private JCheckBox tableHeadCountry;
+    private JCheckBox tableHeadProtocol;
+    private JCheckBox tableHeadTitle;
     private JCheckBox tableHeadHeader;
+    private JCheckBox tableHeadSeo;
     private JSeparator sep1;
 
     public FofaPanel() {
@@ -64,7 +71,7 @@ public class FofaPanel extends JPanel {
 
     private void init() {
 
-        pagePanel = new JPanel();
+        blankPanel = new JPanel();
         btnPanel = new JPanel();
         tablePanel = new JPanel();
         btnFirstLinePanel = new JPanel();
@@ -79,6 +86,14 @@ public class FofaPanel extends JPanel {
         nextPageBtn = new JButton();
         searchField = new JTextField();
         tablePageSizeField = new JTextField();
+        tableHeadServer = new JCheckBox("Server", true);
+        tableHeadType = new JCheckBox("Type", true);
+        tableHeadCountry = new JCheckBox("Country", true);
+        tableHeadProtocol = new JCheckBox("Protocol", true);
+        tableHeadTitle = new JCheckBox("Title", true);
+        tableHeadCert = new JCheckBox("Cert", false);
+        tableHeadHeader = new JCheckBox("Header", false);
+        tableHeadSeo = new JCheckBox("Seo", false);
         searchBoxHelper = searchField;
         pageLabelHelper = pageLabel;
         resultTable = new FofaLineTable(fofaLineTableModel);
@@ -117,16 +132,13 @@ public class FofaPanel extends JPanel {
             //////////////// btnSecondLinePanel ////////////////
             {
                 btnSecondLinePanel.setLayout(new GridBagLayout());
-                ((GridBagLayout) btnSecondLinePanel.getLayout()).columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+                ((GridBagLayout) btnSecondLinePanel.getLayout()).columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
                 ((GridBagLayout) btnSecondLinePanel.getLayout()).rowHeights = new int[]{0};
-                ((GridBagLayout) btnSecondLinePanel.getLayout()).columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+                ((GridBagLayout) btnSecondLinePanel.getLayout()).columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
                 ((GridBagLayout) btnSecondLinePanel.getLayout()).rowWeights = new double[]{0.0};
 
                 //-+-+-+-+-+-+-+-+-+-+ autoSearchBox -+-+-+-+-+-+-+-+-+-+
                 autoSearchBox = new JCheckBox("PreSearch", true);
-                //-+-+-+-+-+-+-+-+-+-+ 待开发 -+-+-+-+-+-+-+-+-+-+
-                tableHeadCert = new JCheckBox("Cert", false);
-                tableHeadHeader = new JCheckBox("Header", false);
                 //-+-+-+-+-+-+-+-+-+-+ pageLabel -+-+-+-+-+-+-+-+-+-+
                 pageLabel.setText("0");
                 //-+-+-+-+-+-+-+-+-+-+ tableSizeLabel -+-+-+-+-+-+-+-+-+-+
@@ -139,17 +151,24 @@ public class FofaPanel extends JPanel {
                 //-+-+-+-+-+-+-+-+-+-+ nextPageBtn -+-+-+-+-+-+-+-+-+-+
                 nextPageBtn.setText("--->");
 
-                // pagePanel用于将翻页按钮撑到最右边
-                btnSecondLinePanel.add(tableHeadCert, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.BOTH, new Insets(10, 5, 5, 5), 0, 0));
-                btnSecondLinePanel.add(tableHeadHeader, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.BOTH, new Insets(10, 5, 5, 5), 0, 0));
-                btnSecondLinePanel.add(pagePanel, new GridBagConstraints(2, 0, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(10, 5, 0, 0), 0, 0));
-                btnSecondLinePanel.add(tableSizeLabel, new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.BOTH, new Insets(10, 5, 5, 5), 0, 0));
-                btnSecondLinePanel.add(tablePageSizeField, new GridBagConstraints(4, 0, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.BOTH, new Insets(10, 5, 5, 5), 0, 0));
-                btnSecondLinePanel.add(sep1, new GridBagConstraints(5, 0, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.BOTH, new Insets(10, 5, 5, 5), 0, 0));
-                btnSecondLinePanel.add(autoSearchBox, new GridBagConstraints(6, 0, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.BOTH, new Insets(10, 5, 5, 5), 0, 0));
-                btnSecondLinePanel.add(prePageBtn, new GridBagConstraints(7, 0, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.BOTH, new Insets(10, 5, 5, 5), 0, 0));
-                btnSecondLinePanel.add(pageLabel, new GridBagConstraints(8, 0, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.BOTH, new Insets(10, 5, 5, 5), 0, 0));
-                btnSecondLinePanel.add(nextPageBtn, new GridBagConstraints(9, 0, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.BOTH, new Insets(10, 5, 5, 5), 5, 0));
+                int gridx = 0;
+                // blankPanel用于将翻页按钮撑到最右边
+                btnSecondLinePanel.add(tableHeadServer, new GridBagConstraints(gridx++, 0, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.BOTH, new Insets(10, 5, 5, 5), 0, 0));
+                btnSecondLinePanel.add(tableHeadType, new GridBagConstraints(gridx++, 0, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.BOTH, new Insets(10, 5, 5, 5), 0, 0));
+                btnSecondLinePanel.add(tableHeadCountry, new GridBagConstraints(gridx++, 0, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.BOTH, new Insets(10, 5, 5, 5), 0, 0));
+                btnSecondLinePanel.add(tableHeadProtocol, new GridBagConstraints(gridx++, 0, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.BOTH, new Insets(10, 5, 5, 5), 0, 0));
+                btnSecondLinePanel.add(tableHeadTitle, new GridBagConstraints(gridx++, 0, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.BOTH, new Insets(10, 5, 5, 5), 0, 0));
+                btnSecondLinePanel.add(tableHeadCert, new GridBagConstraints(gridx++, 0, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.BOTH, new Insets(10, 5, 5, 5), 0, 0));
+                btnSecondLinePanel.add(tableHeadHeader, new GridBagConstraints(gridx++, 0, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.BOTH, new Insets(10, 5, 5, 5), 0, 0));
+                btnSecondLinePanel.add(tableHeadSeo, new GridBagConstraints(gridx++, 0, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.BOTH, new Insets(10, 5, 5, 5), 0, 0));
+                btnSecondLinePanel.add(blankPanel, new GridBagConstraints(gridx++, 0, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(10, 5, 0, 0), 0, 0));
+                btnSecondLinePanel.add(tableSizeLabel, new GridBagConstraints(gridx++, 0, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.BOTH, new Insets(10, 5, 5, 5), 0, 0));
+                btnSecondLinePanel.add(tablePageSizeField, new GridBagConstraints(gridx++, 0, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.BOTH, new Insets(10, 5, 5, 5), 0, 0));
+                btnSecondLinePanel.add(sep1, new GridBagConstraints(gridx++, 0, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.BOTH, new Insets(10, 5, 5, 5), 0, 0));
+                btnSecondLinePanel.add(autoSearchBox, new GridBagConstraints(gridx++, 0, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.BOTH, new Insets(10, 5, 5, 5), 0, 0));
+                btnSecondLinePanel.add(prePageBtn, new GridBagConstraints(gridx++, 0, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.BOTH, new Insets(10, 5, 5, 5), 0, 0));
+                btnSecondLinePanel.add(pageLabel, new GridBagConstraints(gridx++, 0, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.BOTH, new Insets(10, 5, 5, 5), 0, 0));
+                btnSecondLinePanel.add(nextPageBtn, new GridBagConstraints(gridx++, 0, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.BOTH, new Insets(10, 5, 5, 5), 5, 0));
                 btnPanel.add(btnSecondLinePanel, BorderLayout.CENTER);
             }
             add(btnPanel, BorderLayout.NORTH);
@@ -253,35 +272,33 @@ public class FofaPanel extends JPanel {
         });
 
         autoSearchBox.addChangeListener(e -> {
-            if (autoSearchBox.isSelected())
-                AUTO_SEARCH = Boolean.TRUE;
-            else
-                AUTO_SEARCH = Boolean.FALSE;
+            AUTO_SEARCH = ((JCheckBox) e.getSource()).isSelected();
         });
 
-
-        tableHeadHeader.addChangeListener(e -> {
-            if (tableHeadHeader.isSelected())
-                HEADER = Boolean.TRUE;
-            else
-                HEADER = Boolean.FALSE;
-            FofaLineEntry.addTableHeaderList("header");
+        tableHeadServer.addChangeListener(e -> {
+            SERVER = ((JCheckBox) e.getSource()).isSelected();
+        });
+        tableHeadType.addChangeListener(e -> {
+            TYPE = ((JCheckBox) e.getSource()).isSelected();
+        });
+        tableHeadCountry.addChangeListener(e -> {
+            COUNTRY = ((JCheckBox) e.getSource()).isSelected();
+        });
+        tableHeadProtocol.addChangeListener(e -> {
+            PROTOCOL = ((JCheckBox) e.getSource()).isSelected();
+        });
+        tableHeadTitle.addChangeListener(e -> {
+            TITLE = ((JCheckBox) e.getSource()).isSelected();
         });
         tableHeadCert.addChangeListener(e -> {
-            if (tableHeadCert.isSelected())
-                CERT = Boolean.TRUE;
-            else
-                CERT = Boolean.FALSE;
-            FofaLineEntry.addTableHeaderList("cert");
-        });
-
-
-        tableHeadCert.addChangeListener(e -> {
-            CERT = tableHeadHeader.isSelected();
+            CERT = ((JCheckBox) e.getSource()).isSelected();
         });
 
         tableHeadHeader.addChangeListener(e -> {
-            HEADER = tableHeadCert.isSelected();
+            HEADER = ((JCheckBox) e.getSource()).isSelected();
+        });
+        tableHeadSeo.addChangeListener(e -> {
+            SEO = ((JCheckBox) e.getSource()).isSelected();
         });
 
 
@@ -289,13 +306,14 @@ public class FofaPanel extends JPanel {
 
     private void setNewLine() {
         for (int i = 0; i < fofaLineTableModel.getRowCount(); i++) {
-            resultTable.setRowHeight(i, 22 * (1 + Math.max(queryStringOccurrenceNumber(fofaLineTableModel.getValueAt(i, 10).toString(), "<br>"), queryStringOccurrenceNumber(fofaLineTableModel.getValueAt(i, 9).toString(), "<br>"))));
+            resultTable.setRowHeight(i, 22 * (1 + Math.max(queryStringOccurrenceNumber(fofaLineTableModel.getValueAt(i, FofaLineEntry.fetchTableHeaderList().size() - 1).toString(), "<br>"), queryStringOccurrenceNumber(fofaLineTableModel.getValueAt(i, FofaLineEntry.fetchTableHeaderList().size() - 2).toString(), "<br>"))));
         }
 
     }
 
-    public void showTable(int page) {
+    public void showTable(final int page) {
         new Thread(() -> {
+            int page1 = page;
             pageLabel.setText("searching...");
             try {
                 latch.await();
@@ -304,15 +322,16 @@ public class FofaPanel extends JPanel {
             }
             // 设置页码
             totalTablePage = fofaResult.size() % TABLE_ONEPAGE_SIZE == 0 && fofaResult.size() != 0 ? fofaResult.size() / TABLE_ONEPAGE_SIZE : fofaResult.size() / TABLE_ONEPAGE_SIZE + 1;
-            pageLabel.setText(page + " / " + totalTablePage);
-            if(page > totalTablePage)// 避免当前页超过总页数的逻辑错误
-                TABLE_PAGE.getAndDecrement();
+            pageLabel.setText(page1 + " / " + totalTablePage);
+            if (page1 > totalTablePage) {// 避免当前页超过总页数的逻辑错误
+                page1 = TABLE_PAGE.decrementAndGet();
+            }
             totalSizeLabel.setText("Total Size: " + FOFA_TOTAL_SIZE);
             pageLabel.setText(TABLE_PAGE + " / " + totalTablePage);
 
             // 填充Table数据
-            int start = (page - 1) * TABLE_ONEPAGE_SIZE;
-            int end = (page - 1) * TABLE_ONEPAGE_SIZE + TABLE_ONEPAGE_SIZE;
+            int start = (page1 - 1) * TABLE_ONEPAGE_SIZE;
+            int end = (page1 - 1) * TABLE_ONEPAGE_SIZE + TABLE_ONEPAGE_SIZE;
             if (end <= fofaResult.size()) {
                 /**
                  * 这里有一个坑,

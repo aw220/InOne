@@ -10,10 +10,14 @@ package burp.action.parser;
 
 import burp.ui.entry.FofaLineEntry;
 import com.alibaba.fastjson.JSONArray;
+import fofa.SeoSearch;
 import org.apache.commons.text.StringEscapeUtils;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -21,50 +25,74 @@ import static burp.Utils.*;
 
 public class FofaParser {
 
-    public static List<FofaLineEntry> fromArray(JSONArray list) {
+    public static List<FofaLineEntry> fromArray(JSONArray list) throws IOException {
         List<FofaLineEntry> result = new ArrayList<>();
+        CountDownLatch latchSeo = new CountDownLatch(list.size());
         for (int i = 0; i < list.size(); i++) {
-            FofaLineEntry t = new FofaLineEntry();
-            //{"#", "ip", "host", "port", "server", "type", "country_name", "protocol", "title","header","cert"};
-            t.setIp(list.getJSONArray(i).get(0).toString());
-            t.setHost(list.getJSONArray(i).get(1).toString());
-            t.setPort(list.getJSONArray(i).get(2).toString());
-            t.setServer(list.getJSONArray(i).get(3).toString());
-            t.setType(list.getJSONArray(i).get(4).toString());
-            t.setCountry_name(list.getJSONArray(i).get(5).toString());
-            t.setProtocol(list.getJSONArray(i).get(6).toString());
-            t.setTitle(StringEscapeUtils.unescapeHtml4((list.getJSONArray(i).get(7).toString())));
-            if (CERT && HEADER) {
-                // cert只显示十进制的Serial Number
-                Matcher m = Pattern.compile("<html>" + "Version.*?\n.*").matcher( ((String) list.getJSONArray(i).get(8)).replace("\n", "<br>") + "</html>");
-                if (m.find())
-                    t.setCert(m.group(0));
-                else {
-                    t.setCert("");
+            int finalI = i;
+            executorService.schedule(() -> {
+                FofaLineEntry t = new FofaLineEntry();
+                //{"#", "ip", "host", "port", "server", "type", "country_name", "protocol", "title","header","cert"};
+                t.setIp(list.getJSONArray(finalI).get(FIELDS.indexOf("ip")).toString());
+                t.setHost(list.getJSONArray(finalI).get(FIELDS.indexOf("host")).toString());
+                t.setPort(list.getJSONArray(finalI).get(FIELDS.indexOf("port")).toString());
+                if (SERVER) t.setServer(list.getJSONArray(finalI).get(FIELDS.indexOf("server")).toString());
+                else t.setServer("");
+                if (TYPE) t.setType(list.getJSONArray(finalI).get(FIELDS.indexOf("type")).toString());
+                else t.setType("");
+                if (COUNTRY) t.setCountry(list.getJSONArray(finalI).get(FIELDS.indexOf("country")).toString());
+                else t.setCountry("");
+                if (PROTOCOL) t.setProtocol(list.getJSONArray(finalI).get(FIELDS.indexOf("protocol")).toString());
+                else t.setProtocol("");
+                if (TITLE)
+                    t.setTitle(StringEscapeUtils.unescapeHtml4((list.getJSONArray(finalI).get(FIELDS.indexOf("title")).toString())));
+                else t.setTitle("");
+                if (SEO) {
+                    if (!Pattern.compile("(([01]{0,1}\\d{0,1}\\d|2[0-4]\\d|25[0-5])\\.){3}([01]{0,1}\\d{0,1}\\d|2[0-4]\\d|25[0-5])").matcher(list.getJSONArray(finalI).get(FIELDS.indexOf("host")).toString()).find()) {
+                        List<String> seo = null;
+                        try {
+                            seo = new SeoSearch().search(list.getJSONArray(finalI).get(FIELDS.indexOf("host")).toString());
+                        } catch (Exception e) {
+                            e.printStackTrace(stderr);
+                        }
+                        t.setBd_rank(seo.get(0));
+                        t.setMbd_rank(seo.get(1));
+//                    t.set_360_rank(seo.get(2));
+//                    t.setSm_rank(seo.get(3));
+//                    t.setSg_rank(seo.get(4));
+                        t.setGg_rank(seo.get(2));
+                    } else {
+                        t.setBd_rank("");
+                        t.setMbd_rank("");
+//                t.set_360_rank("");
+//                t.setSm_rank("");
+//                t.setSg_rank("");
+                        t.setGg_rank("");
+                    }
                 }
-                t.setHeader(("<html>" + list.getJSONArray(i).get(9)).replace("\n", "<br>") + "</html>");
-            } else if (CERT) {
-                // cert只显示十进制的Serial Number
-                Matcher m = Pattern.compile("<html>" + "Version.*?\n.*").matcher( ((String) list.getJSONArray(i).get(8)).replace("\n", "<br>") + "</html>");
-                if (m.find())
-                    t.setCert(m.group(0));
-                else {
-                    t.setCert("");
-                }
-            } else if (HEADER) {
-                t.setHeader(("<html>" + list.getJSONArray(i).get(8)).replace("\n", "<br>") + "</html>");
-            }
-//            t.setTitle(StringEscapeUtils.unescapeHtml4(list.get(i).get(7)));// 待开发
-            result.add(t);
+
+                if (CERT) {
+                    // cert只显示十进制的Serial Number
+                    Matcher m = Pattern.compile("Version.*?\n.*").matcher("<html>" + ((String) list.getJSONArray(finalI).get(FIELDS.indexOf("cert"))).replace("\n", "<br>") + "</html>");
+                    if (m.find()) t.setCert(m.group(0));
+                    else {
+                        t.setCert("");
+                    }
+                } else t.setCert("");
+                if (HEADER) {
+                    t.setHeader(("<html>" + list.getJSONArray(finalI).get(FIELDS.indexOf("header"))).replace("\n", "<br>") + "</html>");
+                } else t.setHeader("");
+                latchSeo.countDown();
+                result.add(t);
+            }, 0, TimeUnit.SECONDS);
+        }
+        try {
+            latchSeo.await();
+        } catch (
+                InterruptedException e) {
+            e.printStackTrace(stderr);
         }
         return result;
     }
 
-
-    public static void main(String[] args) {
-        String str = "Version:  v3\nSerial Number: 317003566541851547875090732476009404434398";
-        Matcher m = Pattern.compile("Version.*?\n.*").matcher(str);
-        if (m.find())
-            System.out.println(m.group(0));
-    }
 }

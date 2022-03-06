@@ -12,20 +12,15 @@ import burp.action.parser.FofaParser;
 import burp.ui.entry.FofaLineEntry;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 
 import javax.swing.table.AbstractTableModel;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static burp.Utils.*;
-import static burp.Utils.stdout;
 import static org.apache.logging.log4j.util.Strings.isBlank;
 
 
@@ -37,9 +32,7 @@ public class FofaLineTableModel extends AbstractTableModel implements Serializab
      */
     private static final long serialVersionUID = 1L;
     private FofaLineEntry currentlyDisplayedItem;
-    // 线程池
-    ScheduledExecutorService executorService = new ScheduledThreadPoolExecutor(4,
-            new BasicThreadFactory.Builder().namingPattern("task-schedule-pool-%d").daemon(true).build());
+
 
     private List<FofaLineEntry> lineEntries = new ArrayList<>();
     private static final List<String> titletList = FofaLineEntry.fetchTableHeaderList();
@@ -168,7 +161,6 @@ public class FofaLineTableModel extends AbstractTableModel implements Serializab
     @Override
     public boolean isCellEditable(int rowIndex, int columnIndex) {
         if (titletList.get(columnIndex).equals("cert") || titletList.get(columnIndex).equals("header")) {
-
             return true;
         } else return false;
     }

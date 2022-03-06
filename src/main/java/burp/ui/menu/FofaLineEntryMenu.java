@@ -22,9 +22,6 @@ import java.net.URL;
 import static burp.Utils.*;
 
 public class FofaLineEntryMenu extends JPopupMenu {
-
-
-    private static final long serialVersionUID = 1L;
     private static FofaLineTable fofaLineTable;
 
     public static void main(String[] args) throws Exception {

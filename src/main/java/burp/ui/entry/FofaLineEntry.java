@@ -19,7 +19,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 public class FofaLineEntry {
-    private static final Logger log = LogManager.getLogger(FofaLineEntry.class);
 
     //{"#", "ip", "host", "port", "server", "type", "country_name", "protocol","header","cert"};
     private String ip = ""; // 资产IP
@@ -27,9 +26,15 @@ public class FofaLineEntry {
     private String port = "";// 资产port
     private String server = "";// 资产网页title
     private String type = "";// 资产type
-    private String country_name = "";// 资产country_name
+    private String country = "";// 资产country_name
     private String protocol = "";// 资产protocol
     private String title = "";// 资产protocol
+    private String bd_rank = "";//
+    private String mbd_rank = "";//
+//    private String _360_rank = "";//
+//    private String sm_rank = "";//
+//    private String sg_rank = "";//
+    private String gg_rank = "";//
     private String cert = "";// 资产cert
     private String header = "";// 资产rsp包header
     private static LinkedHashMap<String, Integer> preferredWidths = new LinkedHashMap<String, Integer>();
@@ -42,9 +47,15 @@ public class FofaLineEntry {
             preferredWidths.put("port", 6);
             preferredWidths.put("server", 15);
             preferredWidths.put("type", 12);
-            preferredWidths.put("country_name", 16);
+            preferredWidths.put("country", 8);
             preferredWidths.put("protocol", 8);
-			preferredWidths.put("title", 40);
+            preferredWidths.put("title", 40);
+            preferredWidths.put("百度", 6);
+            preferredWidths.put("手机百度", 12);
+//            preferredWidths.put("360", 6);
+//            preferredWidths.put("神马", 6);
+//            preferredWidths.put("搜狗", 6);
+            preferredWidths.put("谷歌", 6);
             preferredWidths.put("cert", 40);
             preferredWidths.put("header", 400);// 给宽一点，免得显示不全，手动拉宽比较麻烦
         }
@@ -57,30 +68,12 @@ public class FofaLineEntry {
         return keys;
     }
 
-    public static void addTableHeaderList(String header) {
-        preferredWidths.put(header, 30);
-    }
-
     public static void subTableHeaderList(String header) {
         preferredWidths.remove(header);
     }
 
-    public static Logger getLog() {
-        return log;
-    }
-
     public FofaLineEntry() {
-        if (preferredWidths.isEmpty()) {
-            preferredWidths.put("#", 5);
-            preferredWidths.put("ip", 10);
-            preferredWidths.put("host", 25);
-            preferredWidths.put("port", 10);
-            preferredWidths.put("title", 40);
-            preferredWidths.put("country_name", 15);
-            preferredWidths.put("server", 15);
-            preferredWidths.put("protocol", 10);
-            preferredWidths.put("type", 20);
-        }
+
     }
 
     public String getIp() {
@@ -96,8 +89,8 @@ public class FofaLineEntry {
     }
 
 
-    public String getCountry_name() {
-        return country_name;
+    public String getCountry() {
+        return country;
     }
 
     public String getServer() {
@@ -124,6 +117,30 @@ public class FofaLineEntry {
         return cert;
     }
 
+    public String getBd_rank() {
+        return bd_rank;
+    }
+
+    public String getMbd_rank() {
+        return mbd_rank;
+    }
+
+//    public String get_360_rank() {
+//        return _360_rank;
+//    }
+//
+//    public String getSm_rank() {
+//        return sm_rank;
+//    }
+//
+//    public String getSg_rank() {
+//        return sg_rank;
+//    }
+
+    public String getGg_rank() {
+        return gg_rank;
+    }
+
     public void setIp(String ip) {
         this.ip = ip;
     }
@@ -136,8 +153,8 @@ public class FofaLineEntry {
         this.port = port;
     }
 
-    public void setCountry_name(String country_name) {
-        this.country_name = country_name;
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     public void setServer(String server) {
@@ -162,6 +179,30 @@ public class FofaLineEntry {
 
     public void setHeader(String header) {
         this.header = header;
+    }
+
+    public void setBd_rank(String bd_rank) {
+        this.bd_rank = bd_rank;
+    }
+
+    public void setMbd_rank(String mbd_rank) {
+        this.mbd_rank = mbd_rank;
+    }
+
+//    public void set_360_rank(String _360_rank) {
+//        this._360_rank = _360_rank;
+//    }
+//
+//    public void setSm_rank(String sm_rank) {
+//        this.sm_rank = sm_rank;
+//    }
+//
+//    public void setSg_rank(String sg_rank) {
+//        this.sg_rank = sg_rank;
+//    }
+
+    public void setGg_rank(String gg_rank) {
+        this.gg_rank = gg_rank;
     }
 
     public String ToJson() {//注意函数名称，如果是get set开头，会被认为是Getter和Setter函数，会在序列化过程中被调用。
@@ -196,6 +237,28 @@ public class FofaLineEntry {
 
     public Object fetchValue(String paraName) throws Exception {
         //Field[] fields = LineEntry.class.getDeclaredFields();
+        switch (paraName) {
+            case "百度":
+                paraName = "bd_rank";
+                break;
+            case "手机百度":
+                paraName = "mbd_rank";
+                break;
+            case "360":
+                paraName = "_360_rank";
+                break;
+            case "神马":
+                paraName = "sm_rank";
+                break;
+            case "搜狗":
+                paraName = "sg_rank";
+                break;
+            case "谷歌":
+                paraName = "gg_rank";
+                break;
+            default:
+                break;
+        }
         Field field = FofaLineEntry.class.getDeclaredField(paraName);
         return field.get(this);
     }

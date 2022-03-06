@@ -130,7 +130,7 @@ public class FofaLineTable extends JTable {
         });
     }
 
-    public void registerListeners() {
+    private void registerListeners() {
         FofaLineTable.this.setRowSelectionAllowed(true);
         this.addMouseListener(new MouseAdapter() {
             @Override
