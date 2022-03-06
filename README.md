@@ -1,9 +1,5 @@
 # 说明
 一个BurpSuite插件，想法是简化日常挖洞流程，目标是联动常用工具，避免工具切换对思维的割裂。
-
-## 已加入的项目
-### 🗡Fiora
-计划用于后期联动进行PoC管理，感谢大佬@bit4woo的开源项目。
 <br>
 <br>
 # 用法
@@ -29,7 +25,8 @@
 ![image](https://user-images.githubusercontent.com/47287118/156734327-a63e623f-2bbe-4b3b-9556-a1104cf9f61f.png)
 ![image](https://user-images.githubusercontent.com/47287118/156734399-ddb1bdc9-cb9c-4089-88ea-c907eab5f4cb.png)
 ![image](https://user-images.githubusercontent.com/47287118/156734475-59112a40-a248-42ae-bce7-e7cfbf217d14.png)
-
+<br>
+<br>
 ## 🚗🚗🚗不同tool tab右键扩展
 ### 介绍：在如Repeater、Proxy界面，对选中的内容可以发送到命令行进行工具调用。
 ### 用法：
@@ -41,6 +38,7 @@
 <img width="1391" alt="image" src="https://user-images.githubusercontent.com/47287118/156929351-af917b66-8653-453c-b167-6fd722a3686c.png">
 <img width="881" alt="image" src="https://user-images.githubusercontent.com/47287118/156929760-949a395b-978e-4702-b992-8e6b65a233c8.png">
 <img width="589" alt="image" src="https://user-images.githubusercontent.com/47287118/156929662-dd7f3df7-e429-4b11-aed2-e6a4cdc4e00a.png">
-
-## Fiora
+<br>
+<br>
+## ⚔️Fiora
 https://github.com/bit4woo/Fiora
