@@ -25,6 +25,22 @@
 5. Total Size:仅供参考，目前fofa很多东西搜不到了。
 10. export待开发。。。
 
+## 不同tool tab右键扩展
+介绍：在如Repeater、Proxy界面，对选中的内容可以发送到命令行进行工具调用。
+用法：
+1. 规则需要在Config界面的`自定义send to`配置自己的命令，save保存即可
+2. name列为功能名称，template为具体命令，需要替换的部分用`{tar}`占位，如 dismap -u {tar}
+3. 需要配置好自己要调用工具的路径
+4. 展示
+<img width="1386" alt="image" src="https://user-images.githubusercontent.com/47287118/156929375-f76676da-4504-40e2-9ced-99271bf9bf5b.png">
+<img width="1386" alt="image" src="https://user-images.githubusercontent.com/47287118/156929384-1603e4c0-0178-48d0-982e-0959e56d0ed9.png">
+<img width="1391" alt="image" src="https://user-images.githubusercontent.com/47287118/156929351-af917b66-8653-453c-b167-6fd722a3686c.png">
+![image](https://user-images.githubusercontent.com/47287118/156929441-91f286bb-578d-4d21-b72f-1d78d13b21f2.png)
+<img width="589" alt="image" src="https://user-images.githubusercontent.com/47287118/156929662-dd7f3df7-e429-4b11-aed2-e6a4cdc4e00a.png">
+
+
+
+
 ## Fiora
 https://github.com/bit4woo/Fiora
 
