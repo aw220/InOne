@@ -40,7 +40,7 @@ public class ToShellMenu implements IContextMenuFactory {
                     menu.add(new JMenuItem(new AbstractAction(c.getName()) {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            String sh = c.getTemplate().replace("{tar}", getSelectedText(iContextMenuInvocation));
+                            String sh = c.getTemplate().replace("{tar}", getSelectedText(iContextMenuInvocation)).replace("\"","\\\"").replace("'","\\'");
                             String batFile = TerminalExec.genBatchFile(sh, "SendToXXX.bat");
                             TerminalExec.runBatchFile(batFile);
                         }
